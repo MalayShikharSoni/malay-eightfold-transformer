@@ -1,0 +1,24 @@
+{
+  "full_profile": {
+    "login": "malayshikhar",
+    "name": "Malay Shikhar Soni",
+    "bio": "B.Tech CSE @ LPU | Backend dev, Node.js & TypeScript",
+    "html_url": "https://github.com/malayshikhar",
+    "blog": "https://malayshikhar.dev",
+    "email": null,
+    "company": null
+  },
+  "sparse_profile": {
+    "login": "rohanmehta",
+    "name": null,
+    "bio": null,
+    "html_url": "https://github.com/rohanmehta",
+    "blog": "",
+    "email": null,
+    "company": null
+  },
+  "not_found": {
+    "message": "Not Found",
+    "documentation_url": "https://docs.github.com/rest"
+  }
+}

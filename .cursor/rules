@@ -1,0 +1,29 @@
+# Cursor Rules — Multi-Source Candidate Data Transformer
+
+Before doing anything in this repo, read `PROJECT_CONTEXT.md` at the repo root in full.
+It is the authoritative spec for architecture, stack, scope, and what is explicitly
+out of scope. Treat it as binding, not as a suggestion.
+
+## Operating rules for this session
+
+1. Work one pipeline stage at a time. Do not implement multiple stages in a single
+   response unless explicitly asked to. After implementing a stage, stop and summarize
+   what you built and why, in plain language, before moving on.
+2. Do not introduce new libraries, frameworks, or architectural patterns beyond what's
+   listed in PROJECT_CONTEXT.md without flagging it first and explaining why the
+   existing plan is insufficient.
+3. Do not silently "improve" or expand scope (e.g. adding a third source, adding
+   retries/caching/queueing, adding abstraction layers for hypothetical future needs).
+   If you think something should be added, say so and wait for confirmation.
+4. Every function should be small enough and clear enough that its author could
+   explain it in one or two sentences in a live recorded demo. If a piece of logic is
+   getting complex, prefer splitting it into named helper functions with clear
+   responsibilities over one dense function.
+5. Never fabricate or default a field value to make output look more complete than
+   the source data supports. Missing data becomes `null`/empty, never invented.
+6. When normalizing or merging, prefer explicit, readable logic (lookup tables,
+   ordered precedence arrays, named constants) over clever one-liners or deeply
+   nested conditionals.
+7. After each stage works, remind the user to commit with a clear message describing
+   what stage was completed (e.g. `git commit -m "Implement normalize stage: phone, date, country, skills"`).
+   Don't commit automatically — let the user review the diff first.
