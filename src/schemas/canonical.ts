@@ -4,6 +4,7 @@ import { z } from "zod";
 export const ProvenanceMethod = z.enum([
   "direct", // value came straight from a source with no transformation needed
   "normalized", // value was transformed by a normalizer (e.g. phone -> E.164)
+  "normalization_failed", // fact existed but normalizer returned null
   "precedence_override_conflict", // sources disagreed; higher-precedence source won
   "fallback_match", // candidate was matched via name+company, not email
 ]);
