@@ -9,6 +9,7 @@ export const RawFact = z.object({
   rawValue: z.unknown(), // the untransformed value as read from the source
   source: z.enum(["csv", "github"]),
   sourceMethod: z.string(), // e.g. "csv_column:phone", "github_field:bio"
+  rowIndex: z.number().int().nonnegative(), // source-local bundle id (CSV row index or GitHub call index)
 });
 export type RawFact = z.infer<typeof RawFact>;
 

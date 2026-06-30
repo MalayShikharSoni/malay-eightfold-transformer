@@ -11,6 +11,8 @@ export type FetchFn = typeof fetch;
 export interface ReadGitHubFactsOptions {
   fetch?: FetchFn;
   token?: string;
+  /** Source-local bundle id for this API call. Defaults to 0. */
+  callIndex?: number;
 }
 
 interface GitHubUserProfile {
@@ -49,7 +51,7 @@ function buildGitHubHeaders(token?: string): Record<string, string> {
   return headers;
 }
 
-function profileToFacts(profile: GitHubUserProfile): RawFact[] {
+function profileToFacts(profile: GitHubUserProfile, rowIndex: number): RawFact[] {
   const facts: RawFact[] = [];
 
   const name = nonEmpty(profile.name);
@@ -59,6 +61,7 @@ function profileToFacts(profile: GitHubUserProfile): RawFact[] {
       rawValue: name,
       source: "github",
       sourceMethod: "github_field:name",
+      rowIndex,
     });
   }
 
@@ -69,6 +72,7 @@ function profileToFacts(profile: GitHubUserProfile): RawFact[] {
       rawValue: bio,
       source: "github",
       sourceMethod: "github_field:bio",
+      rowIndex,
     });
   }
 
@@ -79,6 +83,7 @@ function profileToFacts(profile: GitHubUserProfile): RawFact[] {
       rawValue: htmlUrl,
       source: "github",
       sourceMethod: "github_field:html_url",
+      rowIndex,
     });
   }
 
@@ -89,6 +94,7 @@ function profileToFacts(profile: GitHubUserProfile): RawFact[] {
       rawValue: blog,
       source: "github",
       sourceMethod: "github_field:blog",
+      rowIndex,
     });
   }
 
@@ -131,7 +137,9 @@ export async function readGitHubFacts(
       return { facts: [] };
     }
 
-    return { facts: profileToFacts(profile as GitHubUserProfile) };
+    return {
+      facts: profileToFacts(profile as GitHubUserProfile, options?.callIndex ?? 0),
+    };
   } catch {
     return { facts: [] };
   }

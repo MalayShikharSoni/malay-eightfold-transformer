@@ -26,7 +26,7 @@ function nonEmpty(value: string | undefined): string | undefined {
   return trimmed === "" ? undefined : trimmed;
 }
 
-function rowToFacts(row: CsvRow): RawFact[] {
+function rowToFacts(row: CsvRow, rowIndex: number): RawFact[] {
   const facts: RawFact[] = [];
 
   const name = nonEmpty(row.name);
@@ -36,6 +36,7 @@ function rowToFacts(row: CsvRow): RawFact[] {
       rawValue: name,
       source: "csv",
       sourceMethod: "csv_column:name",
+      rowIndex,
     });
   }
 
@@ -46,6 +47,7 @@ function rowToFacts(row: CsvRow): RawFact[] {
       rawValue: email,
       source: "csv",
       sourceMethod: "csv_column:email",
+      rowIndex,
     });
   }
 
@@ -56,6 +58,7 @@ function rowToFacts(row: CsvRow): RawFact[] {
       rawValue: phone,
       source: "csv",
       sourceMethod: "csv_column:phone",
+      rowIndex,
     });
   }
 
@@ -66,6 +69,7 @@ function rowToFacts(row: CsvRow): RawFact[] {
       rawValue: company,
       source: "csv",
       sourceMethod: "csv_column:current_company",
+      rowIndex,
     });
   }
 
@@ -76,6 +80,7 @@ function rowToFacts(row: CsvRow): RawFact[] {
       rawValue: title,
       source: "csv",
       sourceMethod: "csv_column:title",
+      rowIndex,
     });
   }
 
@@ -103,6 +108,8 @@ export async function readCsvFacts(filePath: string): Promise<CsvAdapterResult> 
       }),
     );
 
+    let rowIndex = 0;
+
     for await (const record of parser) {
       if (!record || typeof record !== "object") {
         continue;
@@ -116,7 +123,8 @@ export async function readCsvFacts(filePath: string): Promise<CsvAdapterResult> 
       }
 
       try {
-        facts.push(...rowToFacts(record as CsvRow));
+        facts.push(...rowToFacts(record as CsvRow, rowIndex));
+        rowIndex++;
       } catch {
         continue;
       }
